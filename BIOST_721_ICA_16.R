@@ -19,3 +19,5 @@ tail_table <- data.frame(
 )
 
 print(tail_table)
+
+print(pi)
