@@ -1,9 +1,11 @@
 ---
 title: "Project 2: Air Pollution and Sickle Cell Disease Analysis in Durham County"
 author: "Aaron M. Chao"
-date: "November 19, 2026"
+date: "`r Sys.Date()`"
 output: word_document
 ---
+
+GitHub URL: https://github.com/ac1069/BIOST721
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(
@@ -13,33 +15,40 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Be sure to hide code for the knitted output. Should only display the tables & plots, because people want to see the final product instead of the building blocks during a presentation.
-# Add textual descriptions according to instructions. One of these is an ai disclaimer.
-# Push to git. One of these pushes is a readme. To use git, first connect this file to an R-project. 
 ```{r}
+# Load required packages for data manipulation, date handling, tables, and plotting
 library(tidyverse)
 library(lubridate)
 library(knitr)
 library(scales)
 
-# Source or include the processing function
+# Purpose: Reads and cleans a single year's raw EPA air quality CSV file into daily averages.
+# Arguments:
+#   file_path - character string giving the path to the yearly CSV file.
+#   o3_units  - character string specifying output units for Ozone ("ppm" or "ppb"); defaults to "ppm".
+# Returns:
+#   A clean tibble with one row per Date and columns CO, PM25, and O3.
 process_air_quality <- function(file_path, o3_units = "ppm") {
-  df <- read_csv(file_path, show_col_types = FALSE)
-  df <- df %>% distinct()
-  df <- df %>% mutate(Date = mdy(Date) %>% as.Date())
+  df <- read_csv(file_path, show_col_types = FALSE) # Import raw CSV data
+  df <- df %>% distinct() # Remove exact duplicate rows before aggregation or modification of values
+  df <- df %>% mutate(Date = mdy(Date) %>% as.Date()) # Parse Date strings into standard Date objects
   
+  # Locate pollutant concentration columns dynamically by matching column name patterns
   co_col <- grep("CO Concentration", names(df), value = TRUE)
   pm_col <- grep("PM2.5 Concentration", names(df), value = TRUE)
   o3_col <- grep("Ozone Concentration", names(df), value = TRUE)
   
+  # Replace negative measurement error values with zeroes across all pollutant columns
   for (col in c(co_col, pm_col, o3_col)) {
     df[[col]] <- ifelse(df[[col]] < 0, 0, df[[col]])
   }
   
+  # Convert Ozone from ppm to ppb if requested (1 ppm = 1,000 ppb)
   if (o3_units == "ppb") {
     df[[o3_col]] <- df[[o3_col]] * 1000
   }
   
+  # Aggregate multiple readings on the same day into daily averages and rename cleanly
   df %>%
     group_by(Date) %>%
     summarise(
@@ -50,13 +59,17 @@ process_air_quality <- function(file_path, o3_units = "ppm") {
     )
 }
 
-aq_2018 <- process_air_quality("C:\\Users\\User\\Downloads\\data-7\\data\\AQ_2018.csv") %>% mutate(Year = 2018)
-aq_2019 <- process_air_quality("C:\\Users\\User\\Downloads\\data-7\\data\\AQ_2019.csv") %>% mutate(Year = 2019)
-aq_2020 <- process_air_quality("C:\\Users\\User\\Downloads\\data-7\\data\\AQ_2020.csv") %>% mutate(Year = 2020)
+# Process each yearly dataset
+aq_2018 <- process_air_quality("AQ_2018.csv") %>% mutate(Year = 2018)
+aq_2019 <- process_air_quality("AQ_2019.csv") %>% mutate(Year = 2019)
+aq_2020 <- process_air_quality("AQ_2020.csv") %>% mutate(Year = 2020)
+
+# Combine all processed years into a single data frame
 all_aq_data <- bind_rows(aq_2018, aq_2019, aq_2020)
 ```
 
 ```{r}
+# Build a wide summary table of min and max daily concentrations for a given year, formatted to 3 decimals
 gen_table <- function(df, yr) {
   sub <- df %>% filter(Year == yr)
   
@@ -75,12 +88,29 @@ gen_table <- function(df, yr) {
   )
 }
 
-kable(gen_table(all_aq_data, 2018), caption = "2018 Minimum and Maximum Daily Pollutant Concentrations")
-kable(gen_table(all_aq_data, 2019), caption = "2019 Minimum and Maximum Daily Pollutant Concentrations")
-kable(gen_table(all_aq_data, 2020), caption = "2020 Minimum and Maximum Daily Pollutant Concentrations (Jan–Apr)")
+# Render separate summary tables for 2018, 2019, and 2020
+# Left align text columns, right align numerical columns
+kable(
+  gen_table(all_aq_data, 2018),
+  caption = "2018 Minimum and Maximum Daily Pollutant Concentrations",
+  align = c("l", "r", "r")
+)
+
+kable(
+  gen_table(all_aq_data, 2019),
+  caption = "2019 Minimum and Maximum Daily Pollutant Concentrations",
+  align = c("l", "r", "r")
+)
+
+kable(
+  gen_table(all_aq_data, 2020),
+  caption = "2020 Minimum and Maximum Daily Pollutant Concentrations (Jan–Apr)",
+  align = c("l", "r", "r")
+)
 ```
 
 ```{r}
+# Pool daily measurements by calendar month across all available years to compute means and 95% CIs
 monthly_pooled <- all_aq_data %>%
   mutate(Month = month(Date, label = TRUE, abbr = TRUE)) %>%
   group_by(Month) %>%
@@ -90,7 +120,9 @@ monthly_pooled <- all_aq_data %>%
   ) %>%
   mutate(CO_ci = 1.96 * (CO_sd / sqrt(CO_n)), O3_ci = 1.96 * (O3_sd / sqrt(O3_n)))
 
-scale_factor <- 10
+scale_factor <- 10 # Scale O3 by 10 on the primary axis so both seasonal curves are visually legible alongside a secondary axis
+
+# Create plot for Monthly Average CO and Ozone from 2018-2020
 ggplot(monthly_pooled, aes(x = Month)) +
   geom_point(aes(y = CO_mean, color = "CO"), size = 2.5) +
   geom_errorbar(aes(ymin = CO_mean - CO_ci, ymax = CO_mean + CO_ci, color = "CO"), width = 0.2) +
@@ -102,6 +134,7 @@ ggplot(monthly_pooled, aes(x = Month)) +
   theme_minimal() + theme(legend.position = "bottom")
 ```
 ```{r}
+# Create a plot for daily PM2.5 distributions across abbreviated months grouped by year using boxplots
 all_aq_data %>%
   mutate(Month = month(Date, label = TRUE, abbr = TRUE), Year = as.factor(Year)) %>%
   ggplot(aes(x = Month, y = PM25, fill = Year)) +
