@@ -1,0 +1,355 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{longtable,booktabs,array}
+\newcounter{none} % for unnumbered tables
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={BIOST\_721\_Project\_2},
+  pdfauthor={Aaron M. Chao},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{BIOST\_721\_Project\_2}
+\author{Aaron M. Chao}
+\date{2026-11-19}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'tidyverse' was built under R version 4.5.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'readr' was built under R version 4.5.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'purrr' was built under R version 4.5.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'forcats' was built under R version 4.5.3
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'lubridate' was built under R version 4.5.3
+\end{verbatim}
+
+\begin{verbatim}
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v dplyr     1.2.0     v readr     2.2.0
+## v forcats   1.0.1     v stringr   1.6.0
+## v ggplot2   4.0.2     v tibble    3.3.1
+## v lubridate 1.9.5     v tidyr     1.3.2
+## v purrr     1.2.2     
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(lubridate)}
+\FunctionTok{library}\NormalTok{(knitr)}
+\FunctionTok{library}\NormalTok{(scales)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'scales'
+## 
+## The following object is masked from 'package:purrr':
+## 
+##     discard
+## 
+## The following object is masked from 'package:readr':
+## 
+##     col_factor
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Source or include the processing function}
+\NormalTok{process\_air\_quality }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(file\_path, }\AttributeTok{o3\_units =} \StringTok{"ppm"}\NormalTok{) \{}
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(file\_path, }\AttributeTok{show\_col\_types =} \ConstantTok{FALSE}\NormalTok{)}
+\NormalTok{  df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{distinct}\NormalTok{()}
+\NormalTok{  df }\OtherTok{\textless{}{-}}\NormalTok{ df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Date =} \FunctionTok{mdy}\NormalTok{(Date) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{as.Date}\NormalTok{())}
+  
+\NormalTok{  co\_col }\OtherTok{\textless{}{-}} \FunctionTok{grep}\NormalTok{(}\StringTok{"CO Concentration"}\NormalTok{, }\FunctionTok{names}\NormalTok{(df), }\AttributeTok{value =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  pm\_col }\OtherTok{\textless{}{-}} \FunctionTok{grep}\NormalTok{(}\StringTok{"PM2.5 Concentration"}\NormalTok{, }\FunctionTok{names}\NormalTok{(df), }\AttributeTok{value =} \ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{  o3\_col }\OtherTok{\textless{}{-}} \FunctionTok{grep}\NormalTok{(}\StringTok{"Ozone Concentration"}\NormalTok{, }\FunctionTok{names}\NormalTok{(df), }\AttributeTok{value =} \ConstantTok{TRUE}\NormalTok{)}
+  
+  \ControlFlowTok{for}\NormalTok{ (col }\ControlFlowTok{in} \FunctionTok{c}\NormalTok{(co\_col, pm\_col, o3\_col)) \{}
+\NormalTok{    df[[col]] }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(df[[col]] }\SpecialCharTok{\textless{}} \DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{, df[[col]])}
+\NormalTok{  \}}
+  
+  \ControlFlowTok{if}\NormalTok{ (o3\_units }\SpecialCharTok{==} \StringTok{"ppb"}\NormalTok{) \{}
+\NormalTok{    df[[o3\_col]] }\OtherTok{\textless{}{-}}\NormalTok{ df[[o3\_col]] }\SpecialCharTok{*} \DecValTok{1000}
+\NormalTok{  \}}
+  
+\NormalTok{  df }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{group\_by}\NormalTok{(Date) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarise}\NormalTok{(}
+      \AttributeTok{CO =} \FunctionTok{mean}\NormalTok{(}\SpecialCharTok{!!}\FunctionTok{sym}\NormalTok{(co\_col), }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+      \AttributeTok{PM25 =} \FunctionTok{mean}\NormalTok{(}\SpecialCharTok{!!}\FunctionTok{sym}\NormalTok{(pm\_col), }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+      \AttributeTok{O3 =} \FunctionTok{mean}\NormalTok{(}\SpecialCharTok{!!}\FunctionTok{sym}\NormalTok{(o3\_col), }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{),}
+      \AttributeTok{.groups =} \StringTok{"drop"}
+\NormalTok{    )}
+\NormalTok{\}}
+
+\NormalTok{aq\_2018 }\OtherTok{\textless{}{-}} \FunctionTok{process\_air\_quality}\NormalTok{(}\StringTok{"C:}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Users}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{User}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Downloads}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{data{-}7}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{data}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{AQ\_2018.csv"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Year =} \DecValTok{2018}\NormalTok{)}
+\NormalTok{aq\_2019 }\OtherTok{\textless{}{-}} \FunctionTok{process\_air\_quality}\NormalTok{(}\StringTok{"C:}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Users}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{User}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Downloads}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{data{-}7}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{data}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{AQ\_2019.csv"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Year =} \DecValTok{2019}\NormalTok{)}
+\NormalTok{aq\_2020 }\OtherTok{\textless{}{-}} \FunctionTok{process\_air\_quality}\NormalTok{(}\StringTok{"C:}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Users}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{User}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Downloads}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{data{-}7}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{data}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{AQ\_2020.csv"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Year =} \DecValTok{2020}\NormalTok{)}
+\NormalTok{all\_aq\_data }\OtherTok{\textless{}{-}} \FunctionTok{bind\_rows}\NormalTok{(aq\_2018, aq\_2019, aq\_2020)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gen\_table }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, yr) \{}
+\NormalTok{  df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(Year }\SpecialCharTok{==}\NormalTok{ yr) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{summarise}\NormalTok{(}
+      \StringTok{\textasciigrave{}}\AttributeTok{CO Min (ppm)}\StringTok{\textasciigrave{}} \OtherTok{=} \FunctionTok{min}\NormalTok{(CO, }\AttributeTok{na.rm=}\NormalTok{T), }\StringTok{\textasciigrave{}}\AttributeTok{CO Max (ppm)}\StringTok{\textasciigrave{}} \OtherTok{=} \FunctionTok{max}\NormalTok{(CO, }\AttributeTok{na.rm=}\NormalTok{T),}
+      \StringTok{\textasciigrave{}}\AttributeTok{PM2.5 Min (ug/m3)}\StringTok{\textasciigrave{}} \OtherTok{=} \FunctionTok{min}\NormalTok{(PM25, }\AttributeTok{na.rm=}\NormalTok{T), }\StringTok{\textasciigrave{}}\AttributeTok{PM2.5 Max (ug/m3)}\StringTok{\textasciigrave{}} \OtherTok{=} \FunctionTok{max}\NormalTok{(PM25, }\AttributeTok{na.rm=}\NormalTok{T),}
+      \StringTok{\textasciigrave{}}\AttributeTok{O3 Min (ppm)}\StringTok{\textasciigrave{}} \OtherTok{=} \FunctionTok{min}\NormalTok{(O3, }\AttributeTok{na.rm=}\NormalTok{T), }\StringTok{\textasciigrave{}}\AttributeTok{O3 Max (ppm)}\StringTok{\textasciigrave{}} \OtherTok{=} \FunctionTok{max}\NormalTok{(O3, }\AttributeTok{na.rm=}\NormalTok{T)}
+\NormalTok{    ) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{pivot\_longer}\NormalTok{(}\FunctionTok{everything}\NormalTok{(), }\AttributeTok{names\_to =} \StringTok{"Pollutant \& Metric"}\NormalTok{, }\AttributeTok{values\_to =} \StringTok{"Concentration"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Concentration =} \FunctionTok{round}\NormalTok{(Concentration, }\DecValTok{3}\NormalTok{))}
+\NormalTok{\}}
+
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{gen\_table}\NormalTok{(all\_aq\_data, }\DecValTok{2018}\NormalTok{), }\AttributeTok{caption =} \StringTok{"2018 Daily Concentration Summary"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lr@{}}
+\caption{2018 Daily Concentration Summary}\tabularnewline
+\toprule\noalign{}
+Pollutant \& Metric & Concentration \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Pollutant \& Metric & Concentration \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+CO Min (ppm) & 0.100 \\
+CO Max (ppm) & 1.000 \\
+PM2.5 Min (ug/m3) & 0.000 \\
+PM2.5 Max (ug/m3) & 20.400 \\
+O3 Min (ppm) & 0.012 \\
+O3 Max (ppm) & 0.067 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{gen\_table}\NormalTok{(all\_aq\_data, }\DecValTok{2019}\NormalTok{), }\AttributeTok{caption =} \StringTok{"2019 Daily Concentration Summary"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lr@{}}
+\caption{2019 Daily Concentration Summary}\tabularnewline
+\toprule\noalign{}
+Pollutant \& Metric & Concentration \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Pollutant \& Metric & Concentration \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+CO Min (ppm) & 0.100 \\
+CO Max (ppm) & 1.300 \\
+PM2.5 Min (ug/m3) & 1.400 \\
+PM2.5 Max (ug/m3) & 21.300 \\
+O3 Min (ppm) & 0.015 \\
+O3 Max (ppm) & 0.068 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{gen\_table}\NormalTok{(all\_aq\_data, }\DecValTok{2020}\NormalTok{), }\AttributeTok{caption =} \StringTok{"2020 Daily Concentration Summary (Jan{-}Apr)"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{longtable}[]{@{}lr@{}}
+\caption{2020 Daily Concentration Summary (Jan-Apr)}\tabularnewline
+\toprule\noalign{}
+Pollutant \& Metric & Concentration \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Pollutant \& Metric & Concentration \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+CO Min (ppm) & 0.100 \\
+CO Max (ppm) & 1.000 \\
+PM2.5 Min (ug/m3) & 0.300 \\
+PM2.5 Max (ug/m3) & 31.200 \\
+O3 Min (ppm) & 0.010 \\
+O3 Max (ppm) & 0.052 \\
+\end{longtable}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{monthly\_pooled }\OtherTok{\textless{}{-}}\NormalTok{ all\_aq\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Month =} \FunctionTok{month}\NormalTok{(Date, }\AttributeTok{label =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{abbr =} \ConstantTok{TRUE}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Month) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}
+    \AttributeTok{CO\_mean =} \FunctionTok{mean}\NormalTok{(CO, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\AttributeTok{CO\_sd =} \FunctionTok{sd}\NormalTok{(CO, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\AttributeTok{CO\_n =} \FunctionTok{sum}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(CO)),}
+    \AttributeTok{O3\_mean =} \FunctionTok{mean}\NormalTok{(O3, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\AttributeTok{O3\_sd =} \FunctionTok{sd}\NormalTok{(O3, }\AttributeTok{na.rm =} \ConstantTok{TRUE}\NormalTok{), }\AttributeTok{O3\_n =} \FunctionTok{sum}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{is.na}\NormalTok{(O3))}
+\NormalTok{  ) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{CO\_ci =} \FloatTok{1.96} \SpecialCharTok{*}\NormalTok{ (CO\_sd }\SpecialCharTok{/} \FunctionTok{sqrt}\NormalTok{(CO\_n)), }\AttributeTok{O3\_ci =} \FloatTok{1.96} \SpecialCharTok{*}\NormalTok{ (O3\_sd }\SpecialCharTok{/} \FunctionTok{sqrt}\NormalTok{(O3\_n)))}
+
+\NormalTok{scale\_factor }\OtherTok{\textless{}{-}} \DecValTok{10}
+\FunctionTok{ggplot}\NormalTok{(monthly\_pooled, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Month)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{y =}\NormalTok{ CO\_mean, }\AttributeTok{color =} \StringTok{"CO"}\NormalTok{), }\AttributeTok{size =} \FloatTok{2.5}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_errorbar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{ymin =}\NormalTok{ CO\_mean }\SpecialCharTok{{-}}\NormalTok{ CO\_ci, }\AttributeTok{ymax =}\NormalTok{ CO\_mean }\SpecialCharTok{+}\NormalTok{ CO\_ci, }\AttributeTok{color =} \StringTok{"CO"}\NormalTok{), }\AttributeTok{width =} \FloatTok{0.2}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{y =}\NormalTok{ O3\_mean }\SpecialCharTok{*}\NormalTok{ scale\_factor, }\AttributeTok{color =} \StringTok{"O3 (x10)"}\NormalTok{), }\AttributeTok{size =} \FloatTok{2.5}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_errorbar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{ymin =}\NormalTok{ (O3\_mean }\SpecialCharTok{{-}}\NormalTok{ O3\_ci) }\SpecialCharTok{*}\NormalTok{ scale\_factor, }\AttributeTok{ymax =}\NormalTok{ (O3\_mean }\SpecialCharTok{+}\NormalTok{ O3\_ci) }\SpecialCharTok{*}\NormalTok{ scale\_factor, }\AttributeTok{color =} \StringTok{"O3 (x10)"}\NormalTok{), }\AttributeTok{width =} \FloatTok{0.2}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_y\_continuous}\NormalTok{(}\AttributeTok{name =} \StringTok{"CO Mean (ppm)"}\NormalTok{, }\AttributeTok{sec.axis =} \FunctionTok{sec\_axis}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{ . }\SpecialCharTok{/}\NormalTok{ scale\_factor, }\AttributeTok{name =} \StringTok{"Ozone Mean (ppm)"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{scale\_color\_manual}\NormalTok{(}\AttributeTok{name =} \StringTok{"Pollutant"}\NormalTok{, }\AttributeTok{values =} \FunctionTok{c}\NormalTok{(}\StringTok{"CO"} \OtherTok{=} \StringTok{"\#D55E00"}\NormalTok{, }\StringTok{"O3 (x10)"} \OtherTok{=} \StringTok{"\#0072B2"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Monthly Average CO and Ozone (2018{-}2020)"}\NormalTok{, }\AttributeTok{x =} \StringTok{"Month"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"bottom"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Chao_Aaron_Project2_files/figure-latex/unnamed-chunk-3-1.pdf}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{all\_aq\_data }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Month =} \FunctionTok{month}\NormalTok{(Date, }\AttributeTok{label =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{abbr =} \ConstantTok{TRUE}\NormalTok{), }\AttributeTok{Year =} \FunctionTok{as.factor}\NormalTok{(Year)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ggplot}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Month, }\AttributeTok{y =}\NormalTok{ PM25, }\AttributeTok{fill =}\NormalTok{ Year)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_boxplot}\NormalTok{(}\AttributeTok{alpha =} \FloatTok{0.7}\NormalTok{, }\AttributeTok{outlier.size =} \DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_brewer}\NormalTok{(}\AttributeTok{palette =} \StringTok{"Set2"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title =} \StringTok{"Daily PM2.5 Concentrations by Month and Year"}\NormalTok{, }\AttributeTok{x =} \StringTok{"Month"}\NormalTok{, }\AttributeTok{y =} \StringTok{"PM2.5 (ug/m3 LC)"}\NormalTok{, }\AttributeTok{fill =} \StringTok{"Year"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{legend.position =} \StringTok{"bottom"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 24 rows containing non-finite outside the scale range
+## (`stat_boxplot()`).
+\end{verbatim}
+
+\pandocbounded{\includegraphics[keepaspectratio]{Chao_Aaron_Project2_files/figure-latex/unnamed-chunk-4-1.pdf}}
+
+\end{document}

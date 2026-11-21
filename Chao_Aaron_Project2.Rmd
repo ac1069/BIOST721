@@ -1,0 +1,118 @@
+---
+title: "Project 2: Air Pollution and Sickle Cell Disease Analysis in Durham County"
+author: "Aaron M. Chao"
+date: "November 19, 2026"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+# Be sure to hide code for the knitted output. Should only display the tables & plots, because people want to see the final product instead of the building blocks during a presentation.
+# Add textual descriptions according to instructions. One of these is an ai disclaimer.
+# Push to git. One of these pushes is a readme. To use git, first connect this file to an R-project. 
+```{r}
+library(tidyverse)
+library(lubridate)
+library(knitr)
+library(scales)
+
+# Source or include the processing function
+process_air_quality <- function(file_path, o3_units = "ppm") {
+  df <- read_csv(file_path, show_col_types = FALSE)
+  df <- df %>% distinct()
+  df <- df %>% mutate(Date = mdy(Date) %>% as.Date())
+  
+  co_col <- grep("CO Concentration", names(df), value = TRUE)
+  pm_col <- grep("PM2.5 Concentration", names(df), value = TRUE)
+  o3_col <- grep("Ozone Concentration", names(df), value = TRUE)
+  
+  for (col in c(co_col, pm_col, o3_col)) {
+    df[[col]] <- ifelse(df[[col]] < 0, 0, df[[col]])
+  }
+  
+  if (o3_units == "ppb") {
+    df[[o3_col]] <- df[[o3_col]] * 1000
+  }
+  
+  df %>%
+    group_by(Date) %>%
+    summarise(
+      CO = mean(!!sym(co_col), na.rm = TRUE),
+      PM25 = mean(!!sym(pm_col), na.rm = TRUE),
+      O3 = mean(!!sym(o3_col), na.rm = TRUE),
+      .groups = "drop"
+    )
+}
+
+aq_2018 <- process_air_quality("C:\\Users\\User\\Downloads\\data-7\\data\\AQ_2018.csv") %>% mutate(Year = 2018)
+aq_2019 <- process_air_quality("C:\\Users\\User\\Downloads\\data-7\\data\\AQ_2019.csv") %>% mutate(Year = 2019)
+aq_2020 <- process_air_quality("C:\\Users\\User\\Downloads\\data-7\\data\\AQ_2020.csv") %>% mutate(Year = 2020)
+all_aq_data <- bind_rows(aq_2018, aq_2019, aq_2020)
+```
+
+```{r}
+gen_table <- function(df, yr) {
+  sub <- df %>% filter(Year == yr)
+  
+  tibble(
+    `Pollutant (Units)` = c("CO (ppm)", "PM2.5 (ug/m3 LC)", "O3 (ppm)"),
+    Minimum = sprintf("%.3f", c(
+      min(sub$CO, na.rm = TRUE),
+      min(sub$PM25, na.rm = TRUE),
+      min(sub$O3, na.rm = TRUE)
+    )),
+    Maximum = sprintf("%.3f", c(
+      max(sub$CO, na.rm = TRUE),
+      max(sub$PM25, na.rm = TRUE),
+      max(sub$O3, na.rm = TRUE)
+    ))
+  )
+}
+
+kable(gen_table(all_aq_data, 2018), caption = "2018 Minimum and Maximum Daily Pollutant Concentrations")
+kable(gen_table(all_aq_data, 2019), caption = "2019 Minimum and Maximum Daily Pollutant Concentrations")
+kable(gen_table(all_aq_data, 2020), caption = "2020 Minimum and Maximum Daily Pollutant Concentrations (Jan–Apr)")
+```
+
+```{r}
+monthly_pooled <- all_aq_data %>%
+  mutate(Month = month(Date, label = TRUE, abbr = TRUE)) %>%
+  group_by(Month) %>%
+  summarise(
+    CO_mean = mean(CO, na.rm = TRUE), CO_sd = sd(CO, na.rm = TRUE), CO_n = sum(!is.na(CO)),
+    O3_mean = mean(O3, na.rm = TRUE), O3_sd = sd(O3, na.rm = TRUE), O3_n = sum(!is.na(O3))
+  ) %>%
+  mutate(CO_ci = 1.96 * (CO_sd / sqrt(CO_n)), O3_ci = 1.96 * (O3_sd / sqrt(O3_n)))
+
+scale_factor <- 10
+ggplot(monthly_pooled, aes(x = Month)) +
+  geom_point(aes(y = CO_mean, color = "CO"), size = 2.5) +
+  geom_errorbar(aes(ymin = CO_mean - CO_ci, ymax = CO_mean + CO_ci, color = "CO"), width = 0.2) +
+  geom_point(aes(y = O3_mean * scale_factor, color = "O3 (x10)"), size = 2.5) +
+  geom_errorbar(aes(ymin = (O3_mean - O3_ci) * scale_factor, ymax = (O3_mean + O3_ci) * scale_factor, color = "O3 (x10)"), width = 0.2) +
+  scale_y_continuous(name = "CO Mean (ppm)", sec.axis = sec_axis(~ . / scale_factor, name = "Ozone Mean (ppm)")) +
+  scale_color_manual(name = "Pollutant", values = c("CO" = "#D55E00", "O3 (x10)" = "#0072B2")) +
+  labs(title = "Monthly Average CO and Ozone (2018-2020)", x = "Month") +
+  theme_minimal() + theme(legend.position = "bottom")
+```
+```{r}
+all_aq_data %>%
+  mutate(Month = month(Date, label = TRUE, abbr = TRUE), Year = as.factor(Year)) %>%
+  ggplot(aes(x = Month, y = PM25, fill = Year)) +
+  geom_boxplot(alpha = 0.7, outlier.size = 1) +
+  scale_fill_brewer(palette = "Set2") +
+  labs(title = "Daily PM2.5 Concentrations by Month and Year", x = "Month", y = "PM2.5 (ug/m3 LC)", fill = "Year") +
+  theme_minimal() + theme(legend.position = "bottom")
+```
+
+# Textual description:
+Ozone ($O_3$) shows a clear seasonal pattern peaking in warmer months (around June) and reaching its lowest levels in late autumn and winter (November–December), while carbon monoxide (CO) trends in the opposite direction with higher means in cooler months (December–January) and lower levels in late spring and summer. Daily $PM_{2.5}$ exhibits moderate month-to-month variation and occasional high spikes, notably standing out in 2020 with a maximum concentration of 31.200 $\mu\text{g/m}^3$ compared to 20.400 $\mu\text{g/m}^3$ in 2018 and 21.300 $\mu\text{g/m}^3$ in 2019. Because 2020 data only cover January through April, estimates for May through December reflect two years of data (2018–2019) and carry wider uncertainty than January–April.   
+
+# AI disclosure
+I utilized Google Gemini as a coding and writing collaborator to brainstorm the structure of the data-processing function, format ggplot2 visualizations, and draft the interpretation section. To verify the accuracy of the AI's assistance, I ran all code locally in RStudio, inspected intermediate data frames for duplicate removal and negative-value corrections, and confirmed that all summary statistics matched the raw data.
