@@ -8,6 +8,7 @@ output: word_document
 GitHub URL: https://github.com/ac1069/BIOST721
 
 ```{r setup, include=FALSE}
+# Hide all code & warnings for the final output
 knitr::opts_chunk$set(
   echo = FALSE,
   warning = FALSE,
