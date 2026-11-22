@@ -17,7 +17,7 @@
 1. Clone this repository and open the R project.
 2. Ensure the following R packages are installed: `tidyverse`, `lubridate`, `knitr`, `scales`.
 3. Place `AQ_2018.csv`, `AQ_2019.csv`, and `AQ_2020.csv` in the working directory.
-4. Render `project2_report.qmd` in RStudio using Quarto.
+4. Render `Chao_Aaron_Project2.Rmd` in RStudio using R Markdown.
 
 ## V. Author & Date
 1. **Author:** Aaron M. Chao
