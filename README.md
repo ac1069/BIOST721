@@ -9,8 +9,8 @@
 
 ## III. File Structure
 1. `AQ_2018.csv`, `AQ_2019.csv`, `AQ_2020.csv`: Raw input data files.
-2. `project2_report.qmd`: Quarto source document generating the final report.
-3. `project2_report.docx`: Final rendered Word document report.
+2. `Chao_Aaron_Project2.Rmd`: R Markdown source document generating the final report.
+3. `Chao_Aaron_Project2.docx`: Final rendered Word document report.
 4. `README.md`: Project documentation.
 
 ## IV. How to Reproduce
